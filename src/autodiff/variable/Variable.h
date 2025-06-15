@@ -49,6 +49,9 @@ namespace autodiff {
         void topological_sort(std::vector<Variable*>& sorted, std::set<Variable*>& visited) const;
 
         friend class AddOperation;
+        friend class MultiplyOperation;
+        friend class DivideOperation;
+        friend class NegativeOperation;
 
     };
 

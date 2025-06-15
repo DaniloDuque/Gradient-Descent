@@ -8,7 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
 # Create GDLib from source files
-add_library(GDLib ${SOURCES})
+add_library(GDLib ${SOURCES}
+        src/autodiff/operation/arithmetic/AddOperation.cpp
+        src/autodiff/operation/arithmetic/MultiplyOperation.cpp
+        src/autodiff/operation/arithmetic/DivideOperation.cpp
+        src/autodiff/operation/unary/NegativeOperation.cpp)
 
 # Include src/ directory for GDLib
 target_include_directories(GDLib
@@ -17,7 +21,12 @@ target_include_directories(GDLib
 )
 
 # ========= Main Executable =========
-add_executable(GradientDescent main.cpp)
+add_executable(GradientDescent main.cpp
+        src/autodiff/operation/arithmetic/AddOperation.cpp
+        src/autodiff/operation/arithmetic/MultiplyOperation.cpp
+        src/autodiff/operation/arithmetic/DivideOperation.cpp
+        src/autodiff/operation/unary/NegativeOperation.cpp
+)
 target_link_libraries(GradientDescent GDLib)
 
 # ========= GoogleTest Setup =========
