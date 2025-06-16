@@ -27,14 +27,16 @@ namespace autodiff {
         Variable operator-(const Variable& other) const;
         Variable operator*(const Variable& other) const;
         Variable operator/(const Variable& other) const;
+
         Variable operator-() const;
-        [[nodiscard]] Variable pow(double exponent) const;
-        [[nodiscard]] Variable exp() const;
-        [[nodiscard]] Variable log() const;
+
+        Variable operator^(const Variable& other) const;
+        Variable log(const Variable& other) const;
+
         [[nodiscard]] Variable sin() const;
         [[nodiscard]] Variable cos() const;
         [[nodiscard]] Variable tanh() const;
-        [[nodiscard]] Variable relu() const;
+
         [[nodiscard]] Variable sigmoid() const;
 
         void print() const;
@@ -51,7 +53,11 @@ namespace autodiff {
         friend class AddOperation;
         friend class MultiplyOperation;
         friend class DivideOperation;
+
         friend class NegativeOperation;
+
+        friend class PowerOperation;
+        friend class LogarithmOperation;
 
     };
 
