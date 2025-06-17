@@ -14,9 +14,9 @@ namespace autodiff {
         Variable(Variable&& other) = default;
         Variable& operator=(Variable&& other) = default;
 
-        [[nodiscard]] double value() const { return value_; }
-        [[nodiscard]] double grad() const { return grad_; }
-        [[nodiscard]] bool requires_grad() const { return requires_grad_; }
+        double value() const { return value_; }
+        double grad() const { return grad_; }
+        bool requires_grad() const { return requires_grad_; }
 
         void set_grad(const double grad) { grad_ = grad; }
         void zero_grad() { grad_ = 0.0; }
@@ -24,20 +24,19 @@ namespace autodiff {
         void backward();
 
         Variable operator+(const Variable& other) const;
-        Variable operator-(const Variable& other) const;
-        Variable operator*(const Variable& other) const;
         Variable operator/(const Variable& other) const;
-
+        Variable operator*(const Variable& other) const;
+        Variable operator-(const Variable& other) const;
         Variable operator-() const;
 
+        Variable exp() const;
+        Variable log() const;
         Variable operator^(const Variable& other) const;
-        Variable log(const Variable& other) const;
 
-        [[nodiscard]] Variable sin() const;
-        [[nodiscard]] Variable cos() const;
-        [[nodiscard]] Variable tanh() const;
+        Variable tanh() const;
 
-        [[nodiscard]] Variable sigmoid() const;
+        Variable cos() const;
+        Variable sin() const;
 
         void print() const;
 
@@ -53,11 +52,18 @@ namespace autodiff {
         friend class AddOperation;
         friend class MultiplyOperation;
         friend class DivideOperation;
-
+        friend class SubtractOperation;
         friend class NegativeOperation;
 
-        friend class PowerOperation;
+        friend class ExponentialOperation;
         friend class LogarithmOperation;
+        friend class PowerOperation;
+
+        friend class TanhOperation;
+
+        friend class SineOperation;
+        friend class CosineOperation;
+
 
     };
 

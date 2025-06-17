@@ -1,4 +1,4 @@
-#include "autodiff/operation/operation.h"
+#include "autodiff/operation/Operation.h"
 
 namespace autodiff {
 
@@ -7,7 +7,10 @@ namespace autodiff {
         explicit NegativeOperation(Variable* input) : in(input) {}
 
         void backward(const double grad_output) override {
-            if (in->requires_grad()) in->grad_ -= grad_output;
+            if (in->requires_grad()) {
+                constexpr double local_grad = -1.0;
+                in->grad_ += grad_output * local_grad;
+            }
         }
 
         std::vector<Variable*> get_inputs() override {

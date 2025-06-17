@@ -2,18 +2,17 @@
 
 namespace autodiff {
 
-    class AddOperation final : public Operation {
+    class SubtractOperation final : public Operation {
     public:
-        AddOperation(Variable* left, Variable* right) : lft(left), rght(right) {}
+        SubtractOperation(Variable* left, Variable* right)
+            : lft(left), rght(right) {}
 
         void backward(const double grad_output) override {
             if (lft->requires_grad()) {
-                constexpr double local_left_grad = 1.0;
-                lft->grad_ += grad_output * local_left_grad;
+                lft->grad_ += grad_output * 1.0;
             }
             if (rght->requires_grad()) {
-                constexpr double local_right_grad = 1.0;
-                rght->grad_ += grad_output * local_right_grad;
+                rght->grad_ += grad_output * -1.0;
             }
         }
 

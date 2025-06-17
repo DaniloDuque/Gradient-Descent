@@ -8,8 +8,14 @@ namespace autodiff {
         	: lft(left), rght(right), lft_val(left->value()), rght_val(right->value()) {}
 
     	void backward(const double grad_output) override {
-        	if (lft->requires_grad()) lft->grad_ += grad_output * rght_val;
-        	if (rght->requires_grad()) rght->grad_ += grad_output * lft_val;
+        	if (lft->requires_grad()) {
+        		const double local_left_grad = rght_val;
+        		lft->grad_ += grad_output * local_left_grad;
+        	}
+        	if (rght->requires_grad()) {
+        		const double local_right_grad = lft_val;
+        		rght->grad_ += grad_output * local_right_grad;
+        	}
     	}
 
     	std::vector<Variable*> get_inputs() override {

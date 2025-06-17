@@ -7,26 +7,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ========= Source Files =========
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
-# Create GDLib from source files
-add_library(GDLib ${SOURCES}
-        src/autodiff/operation/arithmetic/AddOperation.cpp
-        src/autodiff/operation/arithmetic/MultiplyOperation.cpp
-        src/autodiff/operation/arithmetic/DivideOperation.cpp
-        src/autodiff/operation/unary/NegativeOperation.cpp)
+list(REMOVE_ITEM SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/autodiff/main.cpp)
 
-# Include src/ directory for GDLib
+add_library(GDLib ${SOURCES})
+
 target_include_directories(GDLib
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 # ========= Main Executable =========
-add_executable(GradientDescent main.cpp
-        src/autodiff/operation/arithmetic/AddOperation.cpp
-        src/autodiff/operation/arithmetic/MultiplyOperation.cpp
-        src/autodiff/operation/arithmetic/DivideOperation.cpp
-        src/autodiff/operation/unary/NegativeOperation.cpp
-)
+add_executable(GradientDescent src/autodiff/main.cpp)
 target_link_libraries(GradientDescent GDLib)
 
 # ========= GoogleTest Setup =========
@@ -43,8 +34,7 @@ enable_testing()
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS test/*.cpp)
 
 if(TEST_SOURCES)
-    add_executable(GD_Tests ${TEST_SOURCES}
-            test/test_dummy.cpp)
+    add_executable(GD_Tests ${TEST_SOURCES})
     target_link_libraries(GD_Tests
             PRIVATE
             GTest::gtest_main
