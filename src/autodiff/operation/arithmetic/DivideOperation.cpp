@@ -4,7 +4,7 @@ namespace autodiff {
 
     class DivideOperation final : public Operation {
     public:
-        DivideOperation(Variable* left, Variable* right)
+        DivideOperation(const std::shared_ptr<Variable>& left, const std::shared_ptr<Variable>& right)
             : lft(left), rght(right),
               lft_val(left->value()), rght_val(right->value()) {}
 
@@ -19,13 +19,13 @@ namespace autodiff {
             }
         }
 
-        std::vector<Variable*> get_inputs() override {
+        std::vector<std::shared_ptr<Variable>> get_inputs() override {
             return {lft, rght};
         }
 
     private:
-        Variable* lft;
-        Variable* rght;
+        std::shared_ptr<Variable> lft;
+        std::shared_ptr<Variable> rght;
         double lft_val;
         double rght_val;
     };

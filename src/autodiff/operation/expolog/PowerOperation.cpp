@@ -5,7 +5,7 @@ namespace autodiff {
 
     class PowerOperation final : public Operation {
     public:
-        PowerOperation(Variable* lft, Variable *rght)
+        PowerOperation(const std::shared_ptr<Variable>& lft, const std::shared_ptr<Variable>& rght)
             : lft(lft), rght(rght), lft_val(lft->value()), rght_val(rght->value()) {}
 
         void backward(const double grad_output) override {
@@ -19,13 +19,13 @@ namespace autodiff {
             }
         }
 
-        std::vector<Variable*> get_inputs() override {
+        std::vector<std::shared_ptr<Variable>> get_inputs() override {
             return {lft, rght};
         }
 
     private:
-        Variable* lft;
-        Variable* rght;
+        std::shared_ptr<Variable> lft;
+        std::shared_ptr<Variable> rght;
         double lft_val;
         double rght_val;
     };

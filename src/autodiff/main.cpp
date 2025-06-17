@@ -3,17 +3,14 @@
 using namespace autodiff;
 
 int main() {
-    Variable x(2.0, true);
-    Variable t(3.0);
-    Variable a = x * x;
-    Variable b = a + x;
-    Variable y = b + t;
-    y.backward();
+    const auto x = Variable::create(2.0, true);
 
-                       // 3. Backpropagate to compute dy/dx
+    const auto y = 1.0 / (1.0 + (-x)->exp());
 
-    x.print(); // should show grad = f'(2.0) = 2*2 + 3 = 7
-    y.print(); // optional, value = f(2) = 4 + 6 = 10
+    y->backward();
+
+    x->print();
+    y->print();
 
     return 0;
 }

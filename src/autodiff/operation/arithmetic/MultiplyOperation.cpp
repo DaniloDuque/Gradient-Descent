@@ -4,7 +4,7 @@ namespace autodiff {
 
 	class MultiplyOperation final : public Operation {
 	public:
-    	MultiplyOperation(Variable* left, Variable* right)
+    	MultiplyOperation(const std::shared_ptr<Variable>& left, const std::shared_ptr<Variable>& right)
         	: lft(left), rght(right), lft_val(left->value()), rght_val(right->value()) {}
 
     	void backward(const double grad_output) override {
@@ -18,13 +18,13 @@ namespace autodiff {
         	}
     	}
 
-    	std::vector<Variable*> get_inputs() override {
+    	std::vector<std::shared_ptr<Variable>> get_inputs() override {
         	return {lft, rght};
     	}
 
 	private:
-    	Variable* lft{};
-    	Variable* rght{};
+    	std::shared_ptr<Variable> lft{};
+    	std::shared_ptr<Variable> rght{};
     	double lft_val;
     	double rght_val;
 	};

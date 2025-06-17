@@ -4,7 +4,7 @@ namespace autodiff {
 
     class LogarithmOperation final : public Operation {
     public:
-        explicit LogarithmOperation(Variable* arg)
+        explicit LogarithmOperation(const std::shared_ptr<Variable>& arg)
             : arg(arg), arg_val(arg->value()) {}
 
         void backward(const double grad_output) override {
@@ -14,12 +14,12 @@ namespace autodiff {
             }
         }
 
-        std::vector<Variable*> get_inputs() override {
+        std::vector<std::shared_ptr<Variable>> get_inputs() override {
             return {arg};
         }
 
     private:
-        Variable* arg;
+        std::shared_ptr<Variable> arg;
         double arg_val;
     };
 

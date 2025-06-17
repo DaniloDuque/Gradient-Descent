@@ -3,7 +3,7 @@
 namespace autodiff {
     class TanhOperation final : public Operation {
     public:
-        explicit TanhOperation(Variable* input)
+        explicit TanhOperation(const std::shared_ptr<Variable>& input)
             : in(input), in_val(input->value()) {}
 
         void backward(const double grad_output) override {
@@ -13,12 +13,12 @@ namespace autodiff {
             }
         }
 
-        std::vector<Variable*> get_inputs() override {
+        std::vector<std::shared_ptr<Variable>> get_inputs() override {
             return {in};
         }
 
     private:
-        Variable* in;
+        std::shared_ptr<Variable> in;
         double in_val;
     };
 

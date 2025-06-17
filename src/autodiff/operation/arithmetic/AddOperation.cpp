@@ -4,7 +4,7 @@ namespace autodiff {
 
     class AddOperation final : public Operation {
     public:
-        AddOperation(Variable* left, Variable* right) : lft(left), rght(right) {}
+        AddOperation(const std::shared_ptr<Variable>& left, const std::shared_ptr<Variable>& right) : lft(left), rght(right) {}
 
         void backward(const double grad_output) override {
             if (lft->requires_grad()) {
@@ -17,13 +17,12 @@ namespace autodiff {
             }
         }
 
-        std::vector<Variable*> get_inputs() override {
+        std::vector<std::shared_ptr<Variable>> get_inputs() override {
             return {lft, rght};
         }
 
     private:
-        Variable* lft;
-        Variable* rght;
+        std::shared_ptr<Variable> lft, rght;
     };
 
 }
