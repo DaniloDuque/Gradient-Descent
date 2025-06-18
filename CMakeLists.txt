@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ========= Source Files =========
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
-list(REMOVE_ITEM SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/autodiff/main.cpp)
+# Remove main.cpp if accidentally placed in src/
+list(FILTER SOURCES EXCLUDE REGEX ".*/main.cpp")
 
+# ========= Library =========
 add_library(GDLib ${SOURCES})
 
 target_include_directories(GDLib
@@ -17,7 +19,7 @@ target_include_directories(GDLib
 )
 
 # ========= Main Executable =========
-add_executable(GradientDescent src/autodiff/main.cpp)
+add_executable(GradientDescent main.cpp)
 target_link_libraries(GradientDescent GDLib)
 
 # ========= GoogleTest Setup =========
@@ -35,6 +37,7 @@ file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS test/*.cpp)
 
 if(TEST_SOURCES)
     add_executable(GD_Tests ${TEST_SOURCES})
+    target_include_directories(GD_Tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
     target_link_libraries(GD_Tests
             PRIVATE
             GTest::gtest_main
