@@ -16,6 +16,7 @@ namespace autodiff {
         double grad() const { return grad_; }
         bool requires_grad() const { return requires_grad_; }
 
+        void set_value(const double new_value) { value_ = new_value; }
         void set_grad(const double grad) { grad_ = grad; }
         void zero_grad() { grad_ = 0.0; }
         void add_grad(const double grad) { grad_ += grad; }
