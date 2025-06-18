@@ -43,14 +43,15 @@ int main() {
         Variable::create(0.1, true)
     };
 
-    Vanilla optimizer(0.01);
+    Vanilla optimizer;
     MSE loss_fn;
+    constexpr double learning_rate = 0.01;
 
     std::cout << std::fixed << std::setprecision(6);
     std::cout << "================ Gradient Descent Training ================\n";
 
-    for (int epoch = 0; epoch < 1000; ++epoch) {
-        optimizer.train(w, X, y_true, loss_fn);
+    for (int epoch = 0; epoch < 100; ++epoch) {
+        optimizer.train(w, X, y_true, loss_fn, learning_rate);
 
         std::vector<std::shared_ptr<Variable>> y_pred;
         for (size_t i = 0; i < y_true.size(); ++i) {

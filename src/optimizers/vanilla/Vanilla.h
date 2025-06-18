@@ -3,22 +3,20 @@
 #include "optimizers/GradientDescent.h"
 
 class Vanilla final : public GradientDescent {
+    std::vector<Variable> y_pred;
 public:
     using Vector = std::vector<double>;
     using Matrix = std::vector<Vector>;
     using Variable = std::shared_ptr<autodiff::Variable>;
 
-    explicit Vanilla(const double learning_rate) {
-        this->learning_rate = learning_rate;
-    }
-
     void train(std::vector<Variable>& w,
            const Matrix& X,
            const Vector& y_true,
-           LossFunction& loss_fn) override {
+           LossFunction& loss_fn, 
+           const double& learning_rate) override {
 
         const size_t n_samples = y_true.size();
-        std::vector<Variable> y_pred;
+        y_pred.clear();
 
         for (size_t i = 0; i < n_samples; ++i) {
             auto pred = autodiff::Variable::create(0.0);

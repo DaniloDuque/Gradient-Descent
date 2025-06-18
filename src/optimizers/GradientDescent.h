@@ -13,8 +13,7 @@ public:
     virtual void train(std::vector<Variable>& w,
                        const Matrix& X,
                        const Vector& y_true,
-                       LossFunction& loss_fn) = 0;
-
-protected:
-    double learning_rate = 0.01;
+                       LossFunction& loss_fn, 
+                       const double& learning_rate) = 0;
+                       
 };
