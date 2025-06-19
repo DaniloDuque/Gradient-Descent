@@ -234,34 +234,34 @@ namespace autodiff {
         return lhs_var->operator+(rhs);
     }
 
-    std::shared_ptr<Variable> operator*(std::shared_ptr<Variable>& lhs, const double rhs) {
+    std::shared_ptr<Variable> operator*(const std::shared_ptr<Variable>& lhs, const double rhs) {
         const auto rhs_var = Variable::create(rhs, false);
-        return lhs * rhs_var;
+        return lhs->operator*(rhs_var);
     }
 
     std::shared_ptr<Variable> operator*(const double lhs, const std::shared_ptr<Variable>& rhs) {
         const auto lhs_var = Variable::create(lhs, false);
-        return lhs_var * rhs;
+        return lhs_var->operator*(rhs);
     }
 
     std::shared_ptr<Variable> operator-(const std::shared_ptr<Variable>& lhs, const double rhs) {
         const auto rhs_var = Variable::create(rhs, false);
-        return lhs - rhs_var;
+        return lhs->operator-(rhs_var);
     }
 
     std::shared_ptr<Variable> operator-(const double lhs, const std::shared_ptr<Variable>& rhs) {
         const auto lhs_var = Variable::create(lhs, false);
-        return lhs_var - rhs;
+        return lhs_var->operator-(rhs);
     }
 
     std::shared_ptr<Variable> operator/(const std::shared_ptr<Variable>& lhs, const double rhs) {
         const auto rhs_var = Variable::create(rhs, false);
-        return lhs / rhs_var;
+        return lhs->operator/(rhs_var);
     }
 
     std::shared_ptr<Variable> operator/(const double lhs, const std::shared_ptr<Variable>& rhs) {
         const auto lhs_var = Variable::create(lhs, false);
-        return lhs_var / rhs;
+        return lhs_var->operator/(rhs);
     }
 
     std::shared_ptr<Variable> pow(const std::shared_ptr<Variable>& lhs, const double rhs) {
