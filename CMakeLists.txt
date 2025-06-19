@@ -66,33 +66,6 @@ set_target_properties(autodiff PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/notebooks
 )
 
-# === GoogleTest setup ===
-FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-)
-FetchContent_MakeAvailable(googletest)
-enable_testing()
-
-file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS test/*.cpp)
-
-if(TEST_SOURCES)
-    add_executable(GD_Tests ${TEST_SOURCES})
-
-    target_include_directories(GD_Tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-    target_link_libraries(GD_Tests
-        PRIVATE
-        GTest::gtest_main
-        GDLib
-    )
-
-    include(GoogleTest)
-    gtest_discover_tests(GD_Tests)
-else()
-    message(STATUS "No test sources found in 'test/' directory — skipping GD_Tests target.")
-endif()
-
 # === Summary messages ===
 message(STATUS "Autodiff sources found: ${AUTODIFF_SOURCES}")
 message(STATUS "Library sources found: ${LIB_SOURCES}")

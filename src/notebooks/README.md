@@ -59,7 +59,7 @@ optimizer = gd.Vanilla()
 learning_rate = 0.01
 optimizer.train(w, X, y, loss_fn, learning_rate)
 
-print(f"Updated weights: [{w[0].value()}, {w[1].value()}]")
+print(f"Updated weights: [{w[0].value}, {w[1].value}]")
 ```
 
 ## Available Components
@@ -77,7 +77,7 @@ print(f"Updated weights: [{w[0].value()}, {w[1].value()}]")
 
 ## Examples
 
-See `gradientdescent.ipynb` for comprehensive examples including:
+See `tutorial.ipynb` for comprehensive examples including:
 - Automatic differentiation with various operations
 - Linear regression using gradient descent
 - Loss and weight trajectory visualization
