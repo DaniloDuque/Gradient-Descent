@@ -11,5 +11,4 @@ namespace autodiff {
         virtual std::vector<std::shared_ptr<Variable>> get_inputs() = 0;
     };
 
-
 }
