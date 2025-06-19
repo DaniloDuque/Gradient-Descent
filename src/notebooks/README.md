@@ -41,7 +41,6 @@ print(f"∂z/∂y = {y.grad}")  # Should be 2*x + 2*y = 10
 ### Gradient Descent Optimization
 
 ```python
-import numpy as np
 import gradientdescent as gd
 
 # Create data
