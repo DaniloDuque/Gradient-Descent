@@ -1,13 +1,22 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <memory>
+
+// AutoDiff includes
 #include "autodiff/variable/Variable.h"
+
+// Optimizer includes
+#include "loss/LossFunction.h"
+#include "loss/mse/MSE.h"
+#include "optimizers/GradientDescent.h"
+#include "optimizers/vanilla/Vanilla.h"
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(autodiff, m) {
-    m.doc() = "Automatic differentiation library";
+PYBIND11_MODULE(gradientdescent, m) {
+    m.doc() = "Gradient descent optimization and automatic differentiation module";
 
+    // ======== AutoDiff Bindings ========
     py::class_<autodiff::Variable, std::shared_ptr<autodiff::Variable>>(m, "Variable")
         .def_static("create",
             [](const double value, const bool requires_grad = false) {
@@ -131,33 +140,13 @@ PYBIND11_MODULE(autodiff, m) {
         .def("__str__", 
             [](const autodiff::Variable& v) {
                 return "Variable(" + std::to_string(v.value()) + ")";
+            })
+        .def("__format__",
+            [](const autodiff::Variable& v, const std::string& format_spec) {
+                return std::to_string(v.value());
             });
 
-    m.def("add",
-        py::overload_cast<const std::shared_ptr<autodiff::Variable>&, const std::shared_ptr<autodiff::Variable>&>
-        (&autodiff::operator+),
-        "Add two variables", py::arg("lhs"), py::arg("rhs"));
-    
-    m.def("subtract", 
-        py::overload_cast<const std::shared_ptr<autodiff::Variable>&, const std::shared_ptr<autodiff::Variable>&>
-        (&autodiff::operator-),
-        "Subtract two variables", py::arg("lhs"), py::arg("rhs"));
-    
-    m.def("multiply", 
-        py::overload_cast<const std::shared_ptr<autodiff::Variable>&, const std::shared_ptr<autodiff::Variable>&>
-        (&autodiff::operator*),
-        "Multiply two variables", py::arg("lhs"), py::arg("rhs"));
-    
-    m.def("divide", 
-        py::overload_cast<const std::shared_ptr<autodiff::Variable>&, const std::shared_ptr<autodiff::Variable>&>
-        (&autodiff::operator/),
-        "Divide two variables", py::arg("lhs"), py::arg("rhs"));
-    
-    m.def("power", 
-        py::overload_cast<const std::shared_ptr<autodiff::Variable>&, const std::shared_ptr<autodiff::Variable>&>
-        (&autodiff::pow),
-        "Raise variable to power", py::arg("base"), py::arg("exponent"));
-    
+    // AutoDiff math functions
     m.def("exp", [](const std::shared_ptr<autodiff::Variable>& x) { return x->exp(); },
         "Compute exponential function", py::arg("x"));
     
@@ -181,4 +170,27 @@ PYBIND11_MODULE(autodiff, m) {
         return autodiff::pow(base, exponent); 
     }, "Compute power function", py::arg("base"), py::arg("exponent"));
 
+    // ======== Optimizer Bindings ========
+    
+    // Bind LossFunction base class (abstract)
+    py::class_<LossFunction, std::shared_ptr<LossFunction>>(m, "LossFunction")
+        .def("compute", &LossFunction::compute, "Compute the loss value",
+             py::arg("y_pred"), py::arg("y_true"));
+
+    // Bind MSE loss function
+    py::class_<MSE, LossFunction, std::shared_ptr<MSE>>(m, "MSE")
+        .def(py::init<>())
+        .def("compute", &MSE::compute, "Compute the mean squared error loss",
+             py::arg("y_pred"), py::arg("y_true"));
+
+    // Bind GradientDescent base class (abstract)
+    py::class_<GradientDescent, std::shared_ptr<GradientDescent>>(m, "GradientDescent")
+        .def("train", &GradientDescent::train, "Train the model using gradient descent",
+             py::arg("w"), py::arg("X"), py::arg("y_true"), py::arg("loss_fn"), py::arg("learning_rate"));
+
+    // Bind Vanilla gradient descent
+    py::class_<Vanilla, GradientDescent, std::shared_ptr<Vanilla>>(m, "Vanilla")
+        .def(py::init<>())
+        .def("train", &Vanilla::train, "Train the model using vanilla gradient descent",
+             py::arg("w"), py::arg("X"), py::arg("y_true"), py::arg("loss_fn"), py::arg("learning_rate"));
 }

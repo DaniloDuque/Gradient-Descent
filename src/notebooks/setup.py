@@ -5,20 +5,25 @@ from setuptools import setup
 import glob
 import os
 
-# Current directory of setup.py (should be src/notebooks/autodiff/)
+# Current directory of setup.py (should be src/notebooks/)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, "..", "..", ".."))  # go up three levels
+project_root = os.path.abspath(os.path.join(current_dir, "..", ".."))  # go up two levels
 
+# Source directories
 autodiff_src = os.path.join(project_root, "src", "autodiff")
-bindings_file = os.path.join(current_dir, "..", "bindings.cpp")
+optimizers_src = os.path.join(project_root, "src", "optimizers")
+loss_src = os.path.join(project_root, "src", "loss")
+
+# Bindings file
+bindings_file = os.path.join(current_dir, "bindings.cpp")
 
 # Collect all .cpp files recursively in src/autodiff
-cpp_files = [bindings_file]  # bindings source file
+cpp_files = [bindings_file]
 cpp_files += glob.glob(os.path.join(autodiff_src, "**", "*.cpp"), recursive=True)
 
 ext_modules = [
     Pybind11Extension(
-        "autodiff",
+        "gradientdescent",
         sources=cpp_files,
         include_dirs=[
             pybind11.get_include(),
@@ -30,9 +35,9 @@ ext_modules = [
 ]
 
 setup(
-    name="autodiff",
+    name="gradientdescent",
     version="0.1.0",
-    description="Automatic differentiation library",
+    description="Gradient descent optimization and automatic differentiation module",
     ext_modules=ext_modules,
     cmdclass={"build_ext": build_ext},
     zip_safe=False,
