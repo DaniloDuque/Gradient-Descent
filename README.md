@@ -36,7 +36,7 @@ The learning rate $\alpha$ controls how large steps we take:
 ### Convergence Behavior
 
 For well-behaved functions (convex and smooth), gradient descent has **linear convergence**:
-$$f(\theta_k) - f(\theta^*) \leq \rho^k [f(\theta_0) - f(\theta^*)]$$
+$$f(θ_k) - f(θ*) ≤ ρ^k [f(θ_0) - f(θ*)]$$
 
 where $\rho < 1$ is the convergence rate and $\theta^*$ is the optimal solution.
 
@@ -106,15 +106,6 @@ $$\mathcal{L}(\boldsymbol{\theta}) = \frac{1}{m} \sum_{i=1}^{m} (y_i - \mathbf{x
 
 **Intuition:** This measures how far our predictions are from the true values, on average.
 
-### The Gradient
-
-The gradient of MSE is:
-$$\frac{\partial \mathcal{L}}{\partial \theta_j} = -\frac{1}{m} \sum_{i=1}^{m} (y_i - \mathbf{x}_i^T\boldsymbol{\theta}) x_{ij}$$
-
-**Interpretation:** 
-- When prediction < actual: gradient is positive → increase $\theta_j$
-- When prediction > actual: gradient is negative → decrease $\theta_j$
-
 ### The Training Process
 
 1. **Initialize:** Start with random weights $\boldsymbol{\theta}_0$
@@ -143,21 +134,7 @@ $$\frac{\partial \mathcal{L}}{\partial \theta_j} = -\frac{1}{m} \sum_{i=1}^{m} (
 - **From Scratch:** Understand every component
 - **Mathematical Rigor:** Proper implementation of algorithms
 - **Practical Applications:** Real-world examples with datasets
-
-## Loss Functions
-
-### Mean Squared Error (MSE)
-
-**Use Case:** Regression problems where you predict continuous values.
-
-$$\mathcal{L}_{MSE}(\boldsymbol{\theta}) = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2$$
-
-**Properties:**
-- Penalizes large errors more than small ones (quadratic penalty)
-- Smooth and differentiable everywhere
-- Convex for linear models (guarantees global minimum)
-
-
+  
 ## Implementation Architecture
 
 ### Core Components
